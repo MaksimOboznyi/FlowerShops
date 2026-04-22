@@ -1,6 +1,6 @@
 from django.contrib import admin
-
-from .models import Order, ConsultationRequest
+from django.utils.html import format_html
+from .models import Order, ConsultationRequest, Bouquet
 
 
 @admin.register(Order)
@@ -55,3 +55,27 @@ class ConsultationRequestAdmin(admin.ModelAdmin):
     readonly_fields = (
         'created_at',
     )
+
+
+@admin.register(Bouquet)
+class BouquetAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'title',
+        'occasion',
+        'price',
+        'is_active',
+        'image_preview',
+    )
+    list_filter = ('is_active', 'occasion')
+    search_fields = ('title', 'description', 'composition')
+    list_editable = ('price', 'is_active')
+    prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('created_at', 'updated_at', 'image_preview')
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="80" />', obj.image.url)
+        return 'Нет изображения'
+
+    image_preview.short_description = 'Превью'

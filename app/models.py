@@ -15,7 +15,7 @@ class Occasion(models.Model):
 class Bouquet(models.Model):
     title = models.CharField('Название букета', max_length=255)
     slug = models.SlugField('Слаг', max_length=255, unique=True)
-    ocсasion = models.ForeignKey(
+    occasion = models.ForeignKey(
         Occasion,
         on_delete=models.SET_NULL,
         null=True,
