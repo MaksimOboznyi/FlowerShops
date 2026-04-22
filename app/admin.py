@@ -50,7 +50,7 @@ class ConsultationRequestAdmin(admin.ModelAdmin):
         'phone',
     )
     list_editable = (
-        'ist_processed',
+        'is_processed',
     )
     readonly_fields = (
         'created_at',
