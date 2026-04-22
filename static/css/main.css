@@ -423,6 +423,10 @@ margin-bottom: 30px;
 	background: #17CF97;
 	color: #FFFFFF;
 	margin-top: 50px;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 .card__btn:hover {
 	background: #14A87B;

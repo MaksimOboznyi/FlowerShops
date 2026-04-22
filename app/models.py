@@ -27,6 +27,8 @@ class Bouquet(models.Model):
     composition = models.TextField('Состав букета', blank=True)
     price = models.PositiveIntegerField('Цена')
     image = models.ImageField('Изображение', upload_to='bouquets/')
+    height = models.PositiveIntegerField('Высота, см', null=True, blank=True)
+    width = models.PositiveIntegerField('Ширина, см', null=True, blank=True)
     is_active = models.BooleanField('Активен', default=True)
     created_at = models.DateTimeField('Создан', auto_now_add=True)
     updated_at = models.DateTimeField('Обновлен', auto_now=True)

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Bouquet
+from django.shortcuts import get_object_or_404
 
 def index(request):
     return render(request, 'index.html')
@@ -7,6 +8,10 @@ def index(request):
 def catalog(request):
     bouquets = Bouquet.objects.filter(is_active=True).select_related('occasion')
     return render(request, 'catalog.html', {'bouquets': bouquets})
+
+def bouquet_detail(request, slug):
+    bouquet = get_object_or_404(Bouquet, slug=slug, is_active=True)
+    return render(request, 'card.html', {'bouquet': bouquet})
 
 def card(request):
     return render(request, 'card.html')

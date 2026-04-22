@@ -31,7 +31,7 @@
 					<div class="catalog__grid">
 						{% for bouquet in bouquets %}
 							<div class="catalog__card">
-								<a href="#" class="catalog__card_link">
+								<a href="{% url 'bouquet_detail' bouquet.slug %}" class="catalog__card_link">
 									<img src="{{ bouquet.image.url }}" alt="{{ bouquet.title }}" class="catalog__card_img">
 
 									<div class="catalog__card_info">
