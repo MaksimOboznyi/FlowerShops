@@ -2,7 +2,7 @@ from django.db import models
 
 class Occasion(models.Model):
     name = models.CharField('Название события', max_length=255, unique=True)
-    slug = models.SlugField('Слаг', max_length=100, unique=True)
+    slug = models.SlugField('Слаг', max_length=100, unique=True) #это название букета в ссылке
     
     class Meta:
         verbose_name = 'Событие'
