@@ -1,7 +1,13 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Order, ConsultationRequest, Bouquet
+from .models import Order, ConsultationRequest, Bouquet, Occasion
 
+
+@admin.register(Occasion)
+class OccasionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'slug')
+    search_fields = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-
+from .models import Bouquet
 
 def index(request):
     return render(request, 'index.html')
 
 def catalog(request):
-    return render(request, 'catalog.html')
+    bouquets = Bouquet.objects.filter(is_active=True).select_related('occasion')
+    return render(request, 'catalog.html'), {'bouquets': bouquets}
 
 def card(request):
     return render(request, 'card.html')
