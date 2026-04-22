@@ -519,11 +519,18 @@ margin-bottom: 30px;
 	height: 8px;
 	position: relative;
 }
-.quiz__progress_lineActive {
+.quiz__progress_lineStart {
 	position: absolute;
 	background: #17CF97;
 	border-radius: 10px;
-	width: 8px;
+	width: 607px;
+	height: 8px;
+}
+.quiz__progress_lineFinish {
+	position: absolute;
+	background: #17CF97;
+	border-radius: 10px;
+	width: 1215px;
 	height: 8px;
 }
 
