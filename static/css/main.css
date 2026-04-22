@@ -438,7 +438,18 @@ margin-bottom: 30px;
 	margin-right: 4px;
 }
 .quiz__back_link {
-	text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    background: none;
+    border: none;
+    padding: 0;
+
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+
+    cursor: pointer;
 }
 .quiz__back_intro {
 	font-size: 14px;
