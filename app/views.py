@@ -6,7 +6,7 @@ def index(request):
 
 def catalog(request):
     bouquets = Bouquet.objects.filter(is_active=True).select_related('occasion')
-    return render(request, 'catalog.html'), {'bouquets': bouquets}
+    return render(request, 'catalog.html', {'bouquets': bouquets})
 
 def card(request):
     return render(request, 'card.html')
