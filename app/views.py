@@ -3,7 +3,14 @@ from .models import Bouquet
 from django.shortcuts import get_object_or_404
 
 def index(request):
-    return render(request, 'index.html')
+    recommended_bouquets = Bouquet.objects.filter(
+        is_active=True
+    ).order_by('?')[:3]
+    
+    context = {
+        'recommended_bouquets': recommended_bouquets,
+    }
+    return render(request, 'index.html', context)
 
 def catalog(request):
     bouquets = Bouquet.objects.filter(is_active=True).select_related('occasion')
