@@ -1,59 +1,96 @@
-from django.shortcuts import render, redirect
+import random
+
+from django.shortcuts import render, redirect, get_object_or_404
+
 from .models import Bouquet
-from django.shortcuts import get_object_or_404
+
+
+BUDGET_PRICE_RANGES = {
+    'low': (0, 1000),
+    'medium': (1000, 5000),
+    'high': (5000, None),
+}
+
+QUIZ_TO_OCCASION_SLUG = {
+    'wedding': 'svadba',
+    'birthday': 'den-rozhdeniya',
+    'no_reason': 'bez-povoda',
+}
+
+
+def pick_bouquet_for_quiz(quiz_event, quiz_budget):
+    available = Bouquet.objects.filter(is_active=True)
+
+    occasion_slug = QUIZ_TO_OCCASION_SLUG.get(quiz_event)
+    matched_by_occasion = available.filter(occasion__slug=occasion_slug) if occasion_slug else available
+
+    price_range = BUDGET_PRICE_RANGES.get(quiz_budget)
+    if price_range:
+        low, high = price_range
+        matched = matched_by_occasion.filter(price__gte=low)
+        if high is not None:
+            matched = matched.filter(price__lt=high)
+    else:
+        matched = matched_by_occasion
+
+    bouquets = list(matched)
+    if bouquets:
+        return random.choice(bouquets)
+
+    relaxed = list(matched_by_occasion)
+    if relaxed:
+        return random.choice(relaxed)
+
+    return available.order_by('?').first()
+
 
 def index(request):
-    recommended_bouquets = Bouquet.objects.filter(
-        is_active=True
-    ).order_by('?')[:3]
-    
-    context = {
-        'recommended_bouquets': recommended_bouquets,
-    }
-    return render(request, 'index.html', context)
+    recommended_bouquets = Bouquet.objects.filter(is_active=True).order_by('?')[:3]
+    return render(request, 'index.html', {'recommended_bouquets': recommended_bouquets})
+
 
 def catalog(request):
     bouquets = Bouquet.objects.filter(is_active=True).select_related('occasion')
     return render(request, 'catalog.html', {'bouquets': bouquets})
 
+
 def bouquet_detail(request, slug):
     bouquet = get_object_or_404(Bouquet, slug=slug, is_active=True)
     return render(request, 'card.html', {'bouquet': bouquet})
 
+
 def card(request):
     return render(request, 'card.html')
+
 
 def consultation(request):
     return render(request, 'consultation.html')
 
+
 def order_step(request):
     return render(request, 'order-step.html')
+
 
 def order(request):
     return render(request, 'order.html')
 
+
 def quiz(request):
     if request.method == 'POST':
-        event = request.POST.get('event')
-        request.session['event'] = event
+        request.session['event'] = request.POST.get('event')
         return redirect('quiz-step')
-    
-    return render(request, "quiz.html")
+    return render(request, 'quiz.html')
 
 
 def quiz_step(request):
     if request.method == 'POST':
-        budget = request.POST.get('budget')
-        request.session['budget'] = budget
+        request.session['budget'] = request.POST.get('budget')
         return redirect('result')
     return render(request, 'quiz-step.html')
 
+
 def result(request):
-    event = request.session.get('event')
-    budget = request.session.get('budget')
-    
-    context = {
-        'event': event,
-        'budget': budget,
-    }
-    return render(request, 'result.html', context)
+    quiz_event = request.session.get('event')
+    quiz_budget = request.session.get('budget')
+    bouquet = pick_bouquet_for_quiz(quiz_event, quiz_budget)
+    return render(request, 'result.html', {'bouquet': bouquet})
