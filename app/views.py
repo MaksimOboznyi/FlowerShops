@@ -11,20 +11,12 @@ BUDGET_PRICE_RANGES = {
     'high': (5000, None),
 }
 
-QUIZ_TO_OCCASION_SLUG = {
-    'wedding': 'svadba',
-    'birthday': 'den-rozhdeniya',
-    'no_reason': 'bez-povoda',
-}
 
-
-def pick_bouquet_for_quiz(quiz_event, quiz_budget):
+def pick_bouquet_for_quiz(occasion_slug, budget_key):
     available = Bouquet.objects.filter(is_active=True)
-
-    occasion_slug = QUIZ_TO_OCCASION_SLUG.get(quiz_event)
     matched_by_occasion = available.filter(occasion__slug=occasion_slug) if occasion_slug else available
 
-    price_range = BUDGET_PRICE_RANGES.get(quiz_budget)
+    price_range = BUDGET_PRICE_RANGES.get(budget_key)
     if price_range:
         low, high = price_range
         matched = matched_by_occasion.filter(price__gte=low)
@@ -90,7 +82,7 @@ def quiz_step(request):
 
 
 def result(request):
-    quiz_event = request.session.get('event')
-    quiz_budget = request.session.get('budget')
-    bouquet = pick_bouquet_for_quiz(quiz_event, quiz_budget)
+    occasion_slug = request.session.get('event')
+    budget_key = request.session.get('budget')
+    bouquet = pick_bouquet_for_quiz(occasion_slug, budget_key)
     return render(request, 'result.html', {'bouquet': bouquet})
