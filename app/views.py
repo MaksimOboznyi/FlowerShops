@@ -55,7 +55,11 @@ def card(request):
     return render(request, 'card.html')
 
 
-def consultation(request):
+def consultation_page(request):
+    return render(request, 'consultation.html')
+
+
+def consultation_send(request):
     if request.method == 'POST':
         form = ConsultationRequestForm(request.POST)
     
@@ -66,7 +70,6 @@ def consultation(request):
             form = ConsultationRequestForm()
         
     return render(request, 'consultation.html', {'form': form})
-
 
 def consultation_done(request):
     return render(request, 'consultation_done.html')

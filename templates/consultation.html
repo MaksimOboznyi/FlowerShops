@@ -26,7 +26,7 @@
 	<section id="singUpConsultation">
 		<div class="container">
 			<div class="singUpConsultation">
-				<form action="{% url 'consultation' %}" method="post" class="singUpConsultation__form">
+				<form action="{% url 'consultation-send' %}" method="post" class="singUpConsultation__form">
 					{% csrf_token %}
 					<div class="title">Запись на консультацию</div>
 					<input type="text" name="customer_name" class="order__form_input" placeholder="Введите Имя">
