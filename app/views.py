@@ -1,7 +1,39 @@
+import random
+
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import OrderForm
 from .models import Bouquet
+
+
+BUDGET_PRICE_RANGES = {
+    'low': (0, 1000),
+    'medium': (1000, 5000),
+    'high': (5000, None),
+}
+
+
+def pick_bouquet_for_quiz(occasion_slug, budget_key):
+    available = Bouquet.objects.filter(is_active=True)
+    matched_by_occasion = available.filter(occasion__slug=occasion_slug) if occasion_slug else available
+
+    price_range = BUDGET_PRICE_RANGES.get(budget_key)
+    if price_range:
+        low, high = price_range
+        matched = matched_by_occasion.filter(price__gte=low)
+        if high is not None:
+            matched = matched.filter(price__lt=high)
+    else:
+        matched = matched_by_occasion
+
+    bouquets = list(matched)
+    if bouquets:
+        return random.choice(bouquets)
+
+    relaxed = list(matched_by_occasion)
+    if relaxed:
+        return random.choice(relaxed)
+
+    return available.order_by('?').first()
 
 
 def index(request):
@@ -27,32 +59,12 @@ def consultation(request):
     return render(request, 'consultation.html')
 
 
-def consultation_done(request):
-    return render(request, 'consultation_done.html')
-
-
-def order(request, slug):
-    bouquet = get_object_or_404(Bouquet, slug=slug, is_active=True)
-
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            new_order = form.save(commit=False)
-            new_order.bouquet = bouquet
-            new_order.save()
-            return redirect('order-done')
-    else:
-        form = OrderForm()
-
-    return render(request, 'order.html', {'form': form, 'bouquet': bouquet})
-
-
-def order_done(request):
-    return render(request, 'order_done.html')
-
-
 def order_step(request):
     return render(request, 'order-step.html')
+
+
+def order(request):
+    return render(request, 'order.html')
 
 
 def quiz(request):
@@ -70,6 +82,7 @@ def quiz_step(request):
 
 
 def result(request):
-    event = request.session.get('event')
-    budget = request.session.get('budget')
-    return render(request, 'result.html', {'event': event, 'budget': budget})
+    occasion_slug = request.session.get('event')
+    budget_key = request.session.get('budget')
+    bouquet = pick_bouquet_for_quiz(occasion_slug, budget_key)
+    return render(request, 'result.html', {'bouquet': bouquet})
