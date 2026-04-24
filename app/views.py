@@ -59,12 +59,20 @@ def consultation(request):
     return render(request, 'consultation.html')
 
 
-def order_step(request):
-    return render(request, 'order-step.html')
+def consultation_done(request):
+    return render(request, 'consultation_done.html')
 
 
 def order(request):
     return render(request, 'order.html')
+
+
+def order_step(request):
+    return render(request, 'order-step.html')
+
+
+def order_done(request):
+    return render(request, 'order_done.html')
 
 
 def quiz(request):
