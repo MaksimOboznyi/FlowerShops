@@ -252,6 +252,10 @@ color: #FFFFFF;
 	width: 655px;
 	margin: 0 auto;
 }
+.consultation__done_btn {
+	width: 188px;
+	height: 57px;
+}
 .consultation__form_input {
 	padding-left: 30px;
 	padding-right: 7px;

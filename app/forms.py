@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Order
-
+from .models import ConsultationRequest
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -22,3 +22,8 @@ class OrderForm(forms.ModelForm):
             }),
             'delivery_time': forms.RadioSelect(),
         }
+
+class ConsultationRequestForm(forms.ModelForm):
+    class Meta:
+        model = ConsultationRequest
+        fields = ['customer_name', 'phone']

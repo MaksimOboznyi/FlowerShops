@@ -1,7 +1,7 @@
 import random
 
 from django.shortcuts import render, redirect, get_object_or_404
-
+from .forms import OrderForm, ConsultationRequestForm
 from .models import Bouquet
 
 
@@ -56,23 +56,44 @@ def card(request):
 
 
 def consultation(request):
-    return render(request, 'consultation.html')
+    if request.method == 'POST':
+        form = ConsultationRequestForm(request.POST)
+    
+        if form.is_valid():
+            form.save()
+            return redirect('consultation-done')
+        else:
+            form = ConsultationRequestForm()
+        
+    return render(request, 'consultation.html', {'form': form})
 
 
 def consultation_done(request):
     return render(request, 'consultation_done.html')
 
 
-def order(request):
-    return render(request, 'order.html')
+def order(request, slug):
+    bouquet = get_object_or_404(Bouquet, slug=slug, is_active=True)
 
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.bouquet = bouquet
+            new_order.save()
+            return redirect('order-done')
+    else:
+        form = OrderForm()
 
-def order_step(request):
-    return render(request, 'order-step.html')
+    return render(request, 'order.html', {'form': form, 'bouquet': bouquet})
 
 
 def order_done(request):
     return render(request, 'order_done.html')
+
+
+def order_step(request):
+    return render(request, 'order-step.html')
 
 
 def quiz(request):
