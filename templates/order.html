@@ -29,13 +29,6 @@
 				<div class="order__block">
 					<div class="order_items">
 						<div class="title">Оформление доставки</div>
-						<div class="order__summary">
-							<img src="{{ bouquet.image.url }}" alt="{{ bouquet.title }}" class="order__summary_img">
-							<div class="order__summary_info">
-								<div class="order__summary_title">{{ bouquet.title }}</div>
-								<div class="order__summary_price">{{ bouquet.price }} руб</div>
-							</div>
-						</div>
 						<form method="post" class="order__form">
 							{% csrf_token %}
 							<div class="order__form_block ficb">
