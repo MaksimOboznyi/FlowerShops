@@ -1,8 +1,10 @@
 import random
-
+from django.conf import settings
+from django.urls import reverse
+from django.utils import timezone
+from .models import Bouquet, Order
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm, ConsultationRequestForm
-from .models import Bouquet
 
 
 BUDGET_PRICE_RANGES = {
@@ -84,15 +86,32 @@ def order(request, slug):
             new_order = form.save(commit=False)
             new_order.bouquet = bouquet
             new_order.save()
-            return redirect('order-done')
+            return redirect('order-payment', order_id=new_order.pk)
     else:
         form = OrderForm()
 
     return render(request, 'order.html', {'form': form, 'bouquet': bouquet})
 
 
-def order_done(request):
-    return render(request, 'order_done.html')
+def order_payment(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    success_url = request.build_absolute_uri(
+        reverse('order-done', args=[order.pk])
+    )
+    payment_context = {
+        'order': order,
+        'receiver': settings.YOOMONEY_RECEIVER,
+        'success_url': success_url,
+    }
+    return render(request, 'order_payment.html', payment_context)
+
+
+def order_done(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    if order.paid_at is None:
+        order.paid_at = timezone.now()
+        order.save(update_fields=['paid_at'])
+    return render(request, 'order_done.html', {'order': order})
 
 
 def order_step(request):

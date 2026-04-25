@@ -83,6 +83,8 @@ class Order(models.Model):
     
     created_at = models.DateTimeField('Создан', auto_now_add=True)
     
+    paid_at = models.DateTimeField('Оплачен', null=True, blank=True)
+    
     class Meta:
         verbose_name ='Заказ'
         verbose_name_plural = 'Заказы'

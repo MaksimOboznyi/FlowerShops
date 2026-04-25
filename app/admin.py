@@ -19,11 +19,13 @@ class OrderAdmin(admin.ModelAdmin):
         'delivery_time',
         'status',
         'created_at',
+        'paid_at'
     )
     list_filter = (
         'status',
         'delivery_time',
         'created_at',
+        'paid_at'
     )
     search_fields = (
         'customer_name',

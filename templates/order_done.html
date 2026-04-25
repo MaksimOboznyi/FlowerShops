@@ -26,8 +26,11 @@
 	<section id="result">
 		<div class="container">
 			<div class="result p100">
-				<div class="title">Спасибо! Заказ принят</div>
-				<p class="card__items_text">Наш флорист свяжется с вами в ближайшее время, чтобы уточнить детали доставки.</p>
+				<div class="title">Спасибо! Заказ №{{ order.pk }} оплачен</div>
+				<p class="card__items_text">
+					Букет «{{ order.bouquet.title }}» доставим по адресу {{ order.address }}
+					в выбранное время. Флорист свяжется с вами для подтверждения деталей.
+				</p>
 				<div class="result__items_block">
 					<a href="{% url 'catalog' %}" class="btn largeBtn result__items_block__btn">Смотреть коллекцию</a>
 					<a href="{% url 'index' %}" class="btn largeBtn result__items_block__btn">На главную</a>
