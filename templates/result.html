@@ -64,6 +64,13 @@
 					<button class="btn largeBtn result__items_block__btn" onclick='window.location.href="{% url 'consultation' %}"'>Заказать консультацию</button>
 					<button class="btn largeBtn result__items_block__btn" onclick='window.location.href="{% url 'catalog' %}"'>Смотреть всю коллекцию</button>
 				</div>
+				<div id="noMatchModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="noMatchTitle">
+					<div class="modal__overlay" data-modal-close></div>
+					<div class="modal__window">
+						<button type="button" class="modal__close" data-modal-close aria-label="Закрыть">&times;</button>
+						<p id="noMatchTitle" class="modal__text">Букета нет на складе, свяжитесь с нами для уточнения</p>
+					</div>
+				</div>
 				{% endif %}
 			</div>
 		</div>
@@ -126,5 +133,24 @@
 			</div>
 		</div>
 	</footer>
+	<script>
+		(function () {
+			var modal = document.getElementById('noMatchModal');
+			if (!modal) {
+				return;
+			}
+			function close() {
+				modal.hidden = true;
+			}
+			modal.querySelectorAll('[data-modal-close]').forEach(function (trigger) {
+				trigger.addEventListener('click', close);
+			});
+			document.addEventListener('keydown', function (event) {
+				if (event.key === 'Escape') {
+					close();
+				}
+			});
+		})();
+	</script>
 </body>
 </html>

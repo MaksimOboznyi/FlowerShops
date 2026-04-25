@@ -13,27 +13,22 @@ BUDGET_PRICE_RANGES = {
 
 
 def pick_bouquet_for_quiz(occasion_slug, budget_key):
-    available = Bouquet.objects.filter(is_active=True)
-    matched_by_occasion = available.filter(occasion__slug=occasion_slug) if occasion_slug else available
+    if not occasion_slug or not budget_key:
+        return None
+
+    matched = Bouquet.objects.filter(is_active=True, occasion__slug=occasion_slug)
 
     price_range = BUDGET_PRICE_RANGES.get(budget_key)
     if price_range:
         low, high = price_range
-        matched = matched_by_occasion.filter(price__gte=low)
+        matched = matched.filter(price__gte=low)
         if high is not None:
             matched = matched.filter(price__lt=high)
-    else:
-        matched = matched_by_occasion
 
     bouquets = list(matched)
-    if bouquets:
-        return random.choice(bouquets)
-
-    relaxed = list(matched_by_occasion)
-    if relaxed:
-        return random.choice(relaxed)
-
-    return available.order_by('?').first()
+    if not bouquets:
+        return None
+    return random.choice(bouquets)
 
 
 def index(request):
