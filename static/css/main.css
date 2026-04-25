@@ -60,6 +60,10 @@ input::placeholder {
 	background: #D9FAF1;
 	color: #17CF97;
 	margin-top: 30px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 }
 .largeBtn:hover {
 	background: #17CF97;
@@ -255,6 +259,10 @@ color: #FFFFFF;
 .consultation__done_btn {
 	width: 188px;
 	height: 57px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 }
 .consultation__form_input {
 	padding-left: 30px;
@@ -698,8 +706,13 @@ input[type=radio]:checked + label {
 	height: 57px;
 	background: #D9FAF1;
 	color: #17CF97;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 }
 .order__form_btn:hover {
+	background: #17CF97;
 	color: #fff;
 }
 .order__img {
