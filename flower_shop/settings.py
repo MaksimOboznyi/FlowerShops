@@ -26,6 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_KEY')
 
+
+YOOMONEY_RECEIVER = os.environ.get('YOOMONEY_RECEIVER', '')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -133,3 +136,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+    
