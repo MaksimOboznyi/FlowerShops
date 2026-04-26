@@ -2,7 +2,7 @@ import random
 from django.conf import settings
 from django.urls import reverse
 from django.utils import timezone
-from .models import Bouquet, Order
+from .models import Bouquet, Order, Occasion
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm, ConsultationRequestForm
 
@@ -114,9 +114,15 @@ def order_step(request):
 
 def quiz(request):
     if request.method == 'POST':
-        request.session['event'] = request.POST.get('event')
+        event = request.POST.get('event')
+        request.session['event'] = event
         return redirect('quiz-step')
-    return render(request, 'quiz.html')
+
+    occasions = Occasion.objects.filter(is_active=True)
+
+    return render(request, 'quiz.html', {
+        'occasions': occasions,
+    })
 
 
 def quiz_step(request):

@@ -1,13 +1,15 @@
 from django.db import models
 
+
 class Occasion(models.Model):
-    name = models.CharField('Название события', max_length=255, unique=True)
-    slug = models.SlugField('Слаг', max_length=100, unique=True) #это название букета в ссылке
-    
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField('Порядок', default=0)
+
     class Meta:
-        verbose_name = 'Событие'
-        verbose_name_plural = 'События'
-        
+        ordering = ['order']  # ← ВАЖНО
+
     def __str__(self):
         return self.name
 

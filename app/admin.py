@@ -5,8 +5,10 @@ from .models import Order, ConsultationRequest, Bouquet, Occasion
 
 @admin.register(Occasion)
 class OccasionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
+    list_display = ('id', 'name', 'slug', 'is_active', 'order')
+    list_filter = ('is_active',)
     search_fields = ('name', 'slug')
+    list_editable = ('is_active', 'order')
     prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(Order)

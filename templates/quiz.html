@@ -36,11 +36,22 @@
 					{% csrf_token %}
 					<div class="quiz__block">
 						<h1 class="quiz__title">К какому событию нужен букет?</h1>
-						<div class="quiz__elems fic">
-							<button type="submit" name="event" value="wedding" class="quiz__elem">Свадьба</button>
-							<button type="submit" name="event" value="birthday" class="quiz__elem">День рождения</button>
-							<button type="submit" name="event" value="no_reason" class="quiz__elem">Без повода</button>
-						</div>
+						<form method="post">
+							{% csrf_token %}
+
+							<div class="quiz__elems fic">
+								{% for occasion in occasions %}
+									<button 
+										type="submit" 
+										name="event" 
+										value="{{ occasion.slug }}" 
+										class="quiz__elem"
+									>
+										{{ occasion.name }}
+									</button>
+								{% endfor %}
+							</div>
+						</form>
 					</div>
 					<div class="quiz__progress">
 						<div class="quiz__progress_step">
