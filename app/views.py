@@ -60,15 +60,14 @@ def consultation_page(request):
 
 
 def consultation_send(request):
-    if request.method == 'POST':
-        form = ConsultationRequestForm(request.POST)
-    
-        if form.is_valid():
-            form.save()
-            return redirect('consultation-done')
-        else:
-            form = ConsultationRequestForm()
-        
+    if request.method != 'POST':
+        return redirect('consultation')
+
+    form = ConsultationRequestForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('consultation-done')
+
     return render(request, 'consultation.html', {'form': form})
 
 def consultation_done(request):
